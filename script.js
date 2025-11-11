@@ -299,21 +299,24 @@ let dueCards = [];
   
   // Funktion, die auf Rotation reagiert
   function handleTilt(event) {
-    if (isAnimating || !isCardFlipped) return;
+    if (isAnimating) return;
     
     const tilt = event.gamma; // -90 bis +90 (links/rechts)
   
-    // Karte leicht mit kippen lassen
+    // Karte leicht mit kippen lassen (works on both front and back)
     card.style.setProperty("--tilt-rotation", `${tilt / 3}deg`);
   
-    if (tilt > 30) {
-      // Gut gekonnt → nächste Karte
-      markKnown();
-    }
+    // Gesture actions only work when card is flipped
+    if (isCardFlipped) {
+      if (tilt > 30) {
+        // Gut gekonnt → nächste Karte
+        markKnown();
+      }
   
-    if (tilt < -30) {
-      // Nicht gekonnt → Karte ans Ende setzen
-      markUnknown();
+      if (tilt < -30) {
+        // Nicht gekonnt → Karte ans Ende setzen
+        markUnknown();
+      }
     }
 
   }
