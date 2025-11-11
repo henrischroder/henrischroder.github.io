@@ -304,7 +304,10 @@ let dueCards = [];
     const tilt = event.gamma; // -90 bis +90 (links/rechts)
   
     // Karte leicht mit kippen lassen (works on both front and back)
-    card.style.setProperty("--tilt-rotation", `${tilt / 3}deg`);
+    // Always apply tilt rotation regardless of flip state
+    if (tilt !== null && tilt !== undefined) {
+      card.style.setProperty("--tilt-rotation", `${tilt / 3}deg`);
+    }
   
     // Gesture actions only work when card is flipped
     if (isCardFlipped) {
