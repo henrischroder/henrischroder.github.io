@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards Gyro-App</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="d-flex flex-column align-items-center justify-content-center vh-100">
+
+  <!-- Gradient Background -->
+  <div class="gradient-background" aria-hidden="true"></div>
+  
+  <!-- Screen Edge Glow -->
+  <div id="edgeGlow" class="edge-glow" aria-hidden="true"></div>
+
+  <!-- Permission Overlay -->
+  <div id="permissionOverlay" class="permission-overlay">
+    <div class="permission-overlay-content">
+      <!-- Welcome Page -->
+      <div id="welcomePage" class="permission-page">
+        <h2 class="mb-4">Welcome to Gyro Cards!</h2>
+        <p class="mb-4">Learn with motion. Tilt your device to navigate through flashcards and master your knowledge.</p>
+        <button id="welcomeContinueBtn" class="btn btn-primary">Get Started</button>
+      </div>
+      
+      <!-- Permission Request Page -->
+      <div id="permissionPage" class="permission-page" style="display: none;">
+        <h2 class="mb-4">Sensor Permission Required</h2>
+        <p class="mb-4">This app uses device orientation to control flashcards. Please grant permission to use the gyroscope and accelerometer.</p>
+        <div class="d-flex flex-column gap-2">
+          <button id="requestPermissionBtn" class="btn btn-primary">Grant Permission</button>
+          <a id="skipPermissionBtn" href="#" class="skip-link">Skip</a>
+        </div>
+      </div>
+      
+      <!-- Instructions Page -->
+      <div id="instructionsPage" class="permission-page" style="display: none;">
+        <h2 class="mb-4" id="instructionsTitle">How to Use</h2>
+        <div id="gestureInstructions" class="instructions-content">
+          <p class="mb-3">📱 <strong>Gesture Controls:</strong></p>
+          <p class="mb-2">↪ Tilt device <strong>right</strong> when you know the answer</p>
+          <p class="mb-2">↩ Tilt device <strong>left</strong> when you don't know the answer</p>
+        </div>
+        <div id="buttonInstructions" class="instructions-content" style="display: none;">
+          <p class="mb-3">🖱️ <strong>Button Controls:</strong></p>
+          <p class="mb-2">Click <strong>"reveal"</strong> to flip the card</p>
+          <p class="mb-2">👍 Click <strong>thumbs up</strong> if you know the answer</p>
+          <p class="mb-2">👎 Click <strong>thumbs down</strong> if you don't know the answer</p>
+        </div>
+        <button id="gotItBtn" class="btn btn-primary btn-lg mt-4">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Buttons -->
+  <div class="position-fixed top-0 end-0 m-3" style="z-index: 1000; display: flex; gap: 0.5rem; flex-direction: column;">
+    <button id="statsToggle">📊 Stats</button>
+    <button id="drawerToggle">📚 Cards</button>
+  </div>
+
+  <!-- Drawer Backdrop -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- Statistics Drawer -->
+  <div id="statsDrawer" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2>Statistics</h2>
+        <button id="statsClose" class="btn-close" aria-label="Close"></button>
+      </div>
+      <div class="drawer-body">
+        <div id="statsContent">
+          <!-- Statistics will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Drawer -->
+  <div id="drawer" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2>Manage Cards</h2>
+        <button id="drawerClose" class="btn-close" aria-label="Close"></button>
+      </div>
+      <div class="drawer-body">
+        <!-- Add New Card Form -->
+        <div class="card-form mb-4">
+          <h3 class="h5 mb-3">Add New Card</h3>
+          <div class="mb-3">
+            <label for="newQuestion" class="form-label">Question</label>
+            <input type="text" class="form-control" id="newQuestion" placeholder="Enter question">
+          </div>
+          <div class="mb-3">
+            <label for="newAnswer" class="form-label">Answer</label>
+            <input type="text" class="form-control" id="newAnswer" placeholder="Enter answer">
+          </div>
+          <button id="addCardBtn" class="btn btn-primary w-100">Add Card</button>
+        </div>
+
+        <!-- Cards List -->
+        <div class="cards-list">
+          <h3 class="h5 mb-3">Your Cards (<span id="cardCount">0</span>)</h3>
+          <div id="cardsList" class="list-group">
+            <!-- Cards will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Reset Stack Button -->
+        <div class="mt-4 pt-4 border-top">
+          <button id="resetStackBtn" class="btn btn-outline-danger w-100">Reset Learning Progress</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center">
+    <h1 class="mb-2">Gyro Cards</h1>
+    <p class="text-secondary mb-4">Learn with motion</p>
+
+    <!-- Karte -->
+    <div id="card" class="card">
+      <div class="card-inner">
+        <div class="card-face card-front d-flex flex-column align-items-center justify-content-center p-4">
+          <div class="card-label">Question</div>
+          <h3 id="card-text" class="mt-3">Lade Karte...</h3>
+        </div>
+        <div class="card-face card-back d-flex flex-column align-items-center justify-content-center p-4">
+          <div class="card-label">Answer</div>
+          <h3 id="card-answer" class="mt-3"></h3>
+          <div id="card-question-back" class="card-question-back mt-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dev-Buttons (temporär) -->
+    <div class="mt-3 d-flex gap-2 justify-content-center">
+      <button id="flipButton" class="btn btn-secondary">reveal</button>
+      <button id="dontKnowButton" class="btn btn-outline-danger" aria-label="Konnte ich nicht">👎</button>
+      <button id="knowButton" class="btn btn-outline-success" aria-label="Konnte ich">👍</button>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div id="progressIndicator" class="progress-indicator mt-4">
+      <div class="progress-stats">
+        <div class="progress-item">
+          <span class="progress-label">Due Today:</span>
+          <span id="dueTodayCount" class="progress-value">0</span>
+        </div>
+        <div class="progress-badges">
+          <span class="badge badge-easy" id="easyCount">0 Easy</span>
+          <span class="badge badge-normal" id="normalCount">0 Normal</span>
+          <span class="badge badge-hard" id="hardCount">0 Hard</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-4 text-secondary">
+      ↪ Tilt <strong>right</strong> when you know the answer <br>
+      ↩ Tilt <strong>left</strong> when you don't know the answer
+    </p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

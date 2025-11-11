@@ -1,0 +1,632 @@
+#card {
+    --tilt-rotation: 0deg;
+    width: 300px;
+    height: 200px;
+    border-radius: 12px;
+    animation: cardIdle 6s ease-in-out infinite;
+    perspective: 1000px;
+    position: relative;
+    background: transparent;
+    border: none;
+    background: transparent;
+    margin: 3rem auto;
+}
+
+#card.slide-out-left {
+    animation: slideOutLeft 0.6s ease-in forwards;
+}
+
+#card.slide-out-right {
+    animation: slideOutRight 0.6s ease-in forwards;
+}
+
+#card.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* 3D Flip structure */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    border-radius: 12px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    background: transparent;
+    animation: cardShadow 4s ease-in-out infinite;
+    border: 3px solid transparent;
+    transition: border 0.3s ease;
+}
+
+/* Screen Edge Glow */
+.edge-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.edge-glow.glow-green {
+    background: linear-gradient(to right, 
+        transparent 0%,
+        rgba(40, 167, 69, 0.3) 90%,
+        rgba(40, 167, 69, 0.6) 95%,
+        rgba(32, 201, 151, 0.8) 100%);
+    animation: edgeGlowGreen 1s ease-out forwards;
+}
+
+.edge-glow.glow-red {
+    background: linear-gradient(to left, 
+        transparent 0%,
+        rgba(220, 53, 69, 0.3) 90%,
+        rgba(220, 53, 69, 0.6) 95%,
+        rgba(232, 62, 140, 0.8) 100%);
+    animation: edgeGlowRed 1s ease-out forwards;
+}
+
+@keyframes cardShadow {
+    0%, 100% {
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    }
+    50% {
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.18);
+    }
+}
+
+.card-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.card-front {
+    background: white;
+}
+
+.card-back {
+    background: white;
+    transform: rotateY(180deg);
+}
+
+.card-label {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+.card-question-back {
+    font-size: 0.9rem;
+    color: #6c757d;
+    opacity: 0.6;
+    font-style: italic;
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.4;
+}
+
+/* Apply the flip on the inner container so outer animations still work */
+#card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+@keyframes cardIdle {
+    0%, 100% {
+        transform: translateY(0) translateX(0) rotate(var(--tilt-rotation)) scale(1);
+    }
+    25% {
+        transform: translateY(-10px) translateX(4px) rotate(calc(var(--tilt-rotation) + 1deg)) scale(1.01);
+    }
+    50% {
+        transform: translateY(-15px) translateX(0) rotate(var(--tilt-rotation)) scale(1.015);
+    }
+    75% {
+        transform: translateY(-10px) translateX(-4px) rotate(calc(var(--tilt-rotation) - 1deg)) scale(1.01);
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-200%) translateY(0) rotate(-20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(200%) translateY(0) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+    }
+}
+
+@keyframes edgeGlowGreen {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes edgeGlowRed {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+body {
+    user-select: none;
+    background-color: #f8f9fa;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Permission Overlay */
+.permission-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.permission-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.permission-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.permission-overlay-content {
+    background: transparent;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 90%;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+    color: white;
+}
+
+.permission-overlay-content h2 {
+    color: white;
+}
+
+.permission-overlay-content p {
+    color: white;
+}
+
+/* Character-by-character animation for overlay pages */
+.permission-page .char,
+#welcomePage .char,
+#permissionPage .char,
+#instructionsPage .char {
+    display: inline-block;
+    opacity: 0;
+    animation: charFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes charFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Button animation for overlay pages */
+.permission-page button,
+.permission-page a,
+#welcomePage button,
+#welcomePage a,
+#permissionPage button,
+#permissionPage a,
+#instructionsPage button,
+#instructionsPage a {
+    /* Initial state - will be animated by JavaScript */
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+@keyframes buttonFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.instructions-content {
+    text-align: left;
+    margin: 1.5rem 0;
+    color: white;
+}
+
+.instructions-content p {
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.skip-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+}
+
+.skip-link:hover {
+    color: rgba(255, 255, 255, 1);
+    text-decoration: underline;
+}
+
+#requestPermissionBtn {
+    width: auto;
+    min-width: 200px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button Container */
+.mt-3.d-flex {
+    position: relative;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.mt-3.d-flex > * {
+    flex-shrink: 0;
+}
+
+/* Icon Buttons */
+#knowButton,
+#dontKnowButton {
+    font-size: 1.5rem;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, width 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+    width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+    flex-shrink: 0;
+}
+
+#knowButton.show,
+#dontKnowButton.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    width: 50px;
+    margin: 0;
+}
+
+/* Reveal Button */
+#flipButton {
+    transition: opacity 0.3s ease, transform 0.3s ease, width 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+    flex-shrink: 0;
+}
+
+#flipButton:disabled {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+}
+
+/* Gradient Background */
+.gradient-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    filter: blur(60px);
+}
+
+.gradient-background::before {
+    content: '';
+    position: absolute;
+    left: calc(50% + 4rem);
+    top: 10vh;
+    width: 36.125rem;
+    aspect-ratio: 1155 / 678;
+    transform: translateX(-50%) rotate(30deg);
+    background: linear-gradient(to top right, #ff80b5, #9089fc);
+    opacity: 0.3;
+    clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);
+}
+
+@media (min-width: 640px) {
+    .gradient-background::before {
+        left: calc(50% - 5rem);
+        width: 72.1875rem;
+        top: 5vh;
+    }
+}
+
+/* Drawer */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-content {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.drawer-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.drawer-body {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.drawer-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+.card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-item-content {
+    flex: 1;
+}
+
+.card-item-question {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.card-item-answer {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.card-item-remove {
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.progress-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.progress-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.progress-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.progress-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-easy {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.badge-normal {
+    background: rgba(0, 123, 255, 0.1);
+    color: #007bff;
+}
+
+.badge-hard {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* Statistics */
+.stat-item {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+/* Drawer Toggle Buttons */
+#drawerToggle,
+#statsToggle {
+    background: white;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: #212529;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#drawerToggle:hover,
+#statsToggle:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+#drawerToggle:active,
+#statsToggle:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
