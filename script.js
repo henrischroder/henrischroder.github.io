@@ -306,7 +306,9 @@ let dueCards = [];
     // Karte leicht mit kippen lassen (works on both front and back)
     // Always apply tilt rotation regardless of flip state
     if (tilt !== null && tilt !== undefined) {
-      card.style.setProperty("--tilt-rotation", `${tilt / 3}deg`);
+      const tiltRotation = tilt / 3;
+      // Update CSS variable - this will be used by the CSS transform
+      card.style.setProperty("--tilt-rotation", `${tiltRotation}deg`);
     }
   
     // Gesture actions only work when card is flipped

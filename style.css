@@ -10,6 +10,7 @@
     border: none;
     background: transparent;
     margin: 3rem auto;
+    transform-style: preserve-3d;
 }
 
 #card.slide-out-left {
@@ -165,16 +166,16 @@
 
 @keyframes cardIdle {
     0%, 100% {
-        transform: translateY(0) translateX(0) rotate(var(--tilt-rotation)) scale(1);
+        transform: translateY(0) translateX(0) rotateZ(var(--tilt-rotation)) scale(1);
     }
     25% {
-        transform: translateY(-10px) translateX(4px) rotate(calc(var(--tilt-rotation) + 1deg)) scale(1.01);
+        transform: translateY(-10px) translateX(4px) rotateZ(var(--tilt-rotation)) scale(1.01);
     }
     50% {
-        transform: translateY(-15px) translateX(0) rotate(var(--tilt-rotation)) scale(1.015);
+        transform: translateY(-15px) translateX(0) rotateZ(var(--tilt-rotation)) scale(1.015);
     }
     75% {
-        transform: translateY(-10px) translateX(-4px) rotate(calc(var(--tilt-rotation) - 1deg)) scale(1.01);
+        transform: translateY(-10px) translateX(-4px) rotateZ(var(--tilt-rotation)) scale(1.01);
     }
 }
 
