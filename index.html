@@ -55,12 +55,13 @@
         <h2 class="mb-4" id="instructionsTitle">How to Use</h2>
         <div id="gestureInstructions" class="instructions-content">
           <p class="mb-3">📱 <strong>Gesture Controls:</strong></p>
+          <p class="mb-2">↑ Tilt device <strong>towards you</strong> to reveal the answer</p>
           <p class="mb-2">↪ Tilt device <strong>right</strong> when you know the answer</p>
           <p class="mb-2">↩ Tilt device <strong>left</strong> when you don't know the answer</p>
         </div>
         <div id="buttonInstructions" class="instructions-content" style="display: none;">
           <p class="mb-3">🖱️ <strong>Button Controls:</strong></p>
-          <p class="mb-2">Click <strong>"reveal"</strong> to flip the card</p>
+          <p class="mb-2">Click <strong>"reveal"</strong> to flip the card (or tilt device towards you)</p>
           <p class="mb-2">👍 Click <strong>thumbs up</strong> if you know the answer</p>
           <p class="mb-2">👎 Click <strong>thumbs down</strong> if you don't know the answer</p>
         </div>
@@ -69,11 +70,6 @@
     </div>
   </div>
 
-  <!-- Drawer Buttons -->
-  <div class="position-fixed top-0 end-0 m-3" style="z-index: 1000; display: flex; gap: 0.5rem; flex-direction: column;">
-    <button id="statsToggle">📊 Stats</button>
-    <button id="drawerToggle">📚 Cards</button>
-  </div>
 
   <!-- Drawer Backdrop -->
   <div class="drawer-backdrop" id="drawerBackdrop"></div>
@@ -172,10 +168,17 @@
       </div>
     </div>
 
-    <p class="mt-4 text-secondary main-stage" style="--stagger-index: 5;">
+    <p id="tiltInstructions" class="mt-4 text-secondary main-stage" style="--stagger-index: 5;">
+      ↑ Tilt device <strong>towards you</strong> to reveal the answer <br>
       ↪ Tilt <strong>right</strong> when you know the answer <br>
       ↩ Tilt <strong>left</strong> when you don't know the answer
     </p>
+
+    <!-- Drawer Buttons -->
+    <div class="mt-4 d-flex gap-2 justify-content-center main-stage" style="--stagger-index: 6;">
+      <button id="statsToggle">📊 Stats</button>
+      <button id="drawerToggle">📚 Cards</button>
+    </div>
   </div>
 
   <script src="script.js"></script>

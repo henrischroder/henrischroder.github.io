@@ -190,6 +190,7 @@ let dueCards = [];
   const edgeGlow = document.getElementById("edgeGlow");
   const cardLabels = document.querySelectorAll('.card-label');
   const orientationOverlay = document.getElementById("orientationOverlay");
+  const tiltInstructions = document.getElementById("tiltInstructions");
   let mainStageActivated = false;
   let isShowingAnswer = false;
   let isAnimating = false;
@@ -506,7 +507,7 @@ let dueCards = [];
   
   // Check if permission is needed and show overlay on page load
   function checkPermissionAndShowOverlay() {
-    // Always show welcome page first
+    // Always show welcome page first (on both mobile and desktop)
     showWelcomeOverlay();
   }
   
@@ -635,12 +636,27 @@ let dueCards = [];
   // Welcome continue button handler
   if (welcomeContinueBtn) {
     welcomeContinueBtn.addEventListener("click", () => {
-      showPermissionOverlay();
+      // On mobile, show permission request page
+      // On desktop, skip permission and go directly to instructions
+      if (isMobileDevice()) {
+        showPermissionOverlay();
+      } else {
+        // On desktop, skip permission and show instructions with button controls
+        hasPermission = false;
+        showInstructionsOverlay(false);
+      }
     });
   }
   
   // Show instructions overlay
   function showInstructionsOverlay(hasGestureSupport) {
+    // Hide welcome page
+    if (welcomePage.style.display !== "none") {
+      welcomePage.style.display = "none";
+      welcomePage.classList.remove("hide");
+      resetCharSpans(welcomePage);
+    }
+    
     // Hide permission page immediately
     if (permissionPage.style.display !== "none") {
       permissionPage.style.display = "none";
@@ -701,12 +717,14 @@ let dueCards = [];
             window.addEventListener("deviceorientation", handleTilt);
             // Show gesture instructions
             showInstructionsOverlay(true);
-            // Ensure buttons are visible when permission is granted
-            ensureButtonsVisible();
+            // Hide buttons when gesture controls are available
+            updateButtonVisibility();
           } else {
             // Permission denied - show button instructions
             hasPermission = false;
             showInstructionsOverlay(false);
+            // Show buttons when gesture controls are not available
+            updateButtonVisibility();
           }
         });
       } else {
@@ -716,12 +734,14 @@ let dueCards = [];
           hasPermission = true;
           window.addEventListener("deviceorientation", handleTilt);
           showInstructionsOverlay(true);
-          // Ensure buttons are visible when permission is granted
-          ensureButtonsVisible();
+          // Hide buttons when gesture controls are available
+          updateButtonVisibility();
         } else {
           // Can't use gestures - show button instructions
           hasPermission = false;
           showInstructionsOverlay(false);
+          // Show buttons when gesture controls are not available
+          updateButtonVisibility();
         }
       }
     });
@@ -734,6 +754,8 @@ let dueCards = [];
       // Skip permission - show button instructions since gestures won't work
       hasPermission = false;
       showInstructionsOverlay(false);
+      // Show buttons when gesture controls are not available
+      updateButtonVisibility();
     });
   }
   
@@ -741,24 +763,33 @@ let dueCards = [];
   if (gotItBtn) {
     gotItBtn.addEventListener("click", () => {
       closeOverlay();
-      // Ensure buttons are visible when permission is granted
-      if (hasPermission) {
-        // Buttons should be visible when gesture interaction is granted
-        buttonContainer.style.display = 'flex';
-        flipButton.style.display = 'block';
-        knowButton.style.display = 'block';
-        dontKnowButton.style.display = 'block';
-      }
+      // Update button visibility based on permission state
+      updateButtonVisibility();
     });
   }
   
-  // Function to ensure buttons are visible
-  function ensureButtonsVisible() {
+  // Function to update button visibility based on permission state
+  function updateButtonVisibility() {
     if (hasPermission) {
+      // Hide buttons when gesture controls are available
+      buttonContainer.style.display = 'none';
+      flipButton.style.display = 'none';
+      knowButton.style.display = 'none';
+      dontKnowButton.style.display = 'none';
+      // Show tilt instructions when gesture controls are available
+      if (tiltInstructions) {
+        tiltInstructions.style.display = 'block';
+      }
+    } else {
+      // Show buttons when gesture controls are not available
       buttonContainer.style.display = 'flex';
       flipButton.style.display = 'block';
       knowButton.style.display = 'block';
       dontKnowButton.style.display = 'block';
+      // Hide tilt instructions when button controls are used
+      if (tiltInstructions) {
+        tiltInstructions.style.display = 'none';
+      }
     }
   }
   

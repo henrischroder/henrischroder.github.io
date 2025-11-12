@@ -1,3 +1,7 @@
+* {
+    word-break: normal !important;
+}
+
 #card {
     --tilt-rotation: 0deg;
     width: 300px;
@@ -90,11 +94,6 @@
     backface-visibility: hidden;
     border-radius: 12px;
     z-index: 1;
-    overflow-wrap: normal !important;
-    word-wrap: normal !important;
-    word-break: keep-all !important;
-    hyphens: none !important;
-    white-space: normal !important;
 }
 
 .card-front {
