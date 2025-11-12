@@ -309,7 +309,7 @@ let dueCards = [];
     const tilt = event.gamma; // -90 bis +90 (links/rechts)
     const forwardTilt = typeof event.beta === "number" ? event.beta : null; // -180 bis 180 (vor/zurück)
 
-    if (!isCardFlipped && forwardTilt !== null && forwardTilt < -25) {
+    if (!isCardFlipped && forwardTilt !== null && forwardTilt > 25) {
       flipCard();
       return;
     }
