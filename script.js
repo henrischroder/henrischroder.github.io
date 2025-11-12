@@ -307,6 +307,12 @@ let dueCards = [];
     if (isAnimating) return;
     
     const tilt = event.gamma; // -90 bis +90 (links/rechts)
+    const forwardTilt = typeof event.beta === "number" ? event.beta : null; // -180 bis 180 (vor/zurück)
+
+    if (!isCardFlipped && forwardTilt !== null && forwardTilt < -25) {
+      flipCard();
+      return;
+    }
   
     // Karte leicht mit kippen lassen (works on both front and back)
     // Always apply tilt rotation regardless of flip state
