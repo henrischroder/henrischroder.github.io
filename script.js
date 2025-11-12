@@ -189,6 +189,7 @@ let dueCards = [];
   const buttonContainer = document.querySelector('.mt-3.d-flex');
   const edgeGlow = document.getElementById("edgeGlow");
   const cardLabels = document.querySelectorAll('.card-label');
+  const orientationOverlay = document.getElementById("orientationOverlay");
   let isShowingAnswer = false;
   let isAnimating = false;
   let isCardFlipped = false;
@@ -264,6 +265,9 @@ let dueCards = [];
   // Initialize on load
   initializeDueCards();
   showCard();
+  updateOrientationLock();
+  window.addEventListener("resize", updateOrientationLock);
+  window.addEventListener("orientationchange", updateOrientationLock);
   
   // Update button container gap based on visible buttons
   function updateButtonGap() {
@@ -326,6 +330,21 @@ let dueCards = [];
 
   }
   
+  function isMobileDevice() {
+    return window.matchMedia("(max-width: 768px)").matches || /Mobi|Android/i.test(navigator.userAgent);
+  }
+
+  function updateOrientationLock() {
+    if (!orientationOverlay) return;
+
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const shouldLock = isMobileDevice() && isLandscape;
+
+    orientationOverlay.classList.toggle("show", shouldLock);
+    orientationOverlay.setAttribute("aria-hidden", shouldLock ? "false" : "true");
+    document.body.classList.toggle("orientation-locked", shouldLock);
+  }
+
   function nextCard() {
     // Refresh due cards first to get the latest count, but don't reset index
     initializeDueCards(false);
