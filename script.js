@@ -836,6 +836,8 @@ let dueCards = [];
   
   // Function to update button visibility based on permission state
   function updateButtonVisibility() {
+    const progressIndicator = document.getElementById('progressIndicator');
+    
     if (hasPermission) {
       // Hide buttons when gesture controls are available
       buttonContainer.style.display = 'none';
@@ -846,6 +848,10 @@ let dueCards = [];
       if (tiltInstructions) {
         tiltInstructions.style.display = 'block';
       }
+      // Reduce spacing between card and progress indicator when buttons are hidden
+      if (progressIndicator) {
+        progressIndicator.style.marginTop = '1rem';
+      }
     } else {
       // Show buttons when gesture controls are not available
       buttonContainer.style.display = 'flex';
@@ -855,6 +861,10 @@ let dueCards = [];
       // Hide tilt instructions when button controls are used
       if (tiltInstructions) {
         tiltInstructions.style.display = 'none';
+      }
+      // Restore normal spacing when buttons are visible
+      if (progressIndicator) {
+        progressIndicator.style.marginTop = '';
       }
     }
   }
