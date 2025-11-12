@@ -132,11 +132,11 @@
   </div>
 
   <div class="container text-center">
-    <h1 class="mb-2">Gyro Cards</h1>
-    <p class="text-secondary mb-4">Learn with motion</p>
+    <h1 class="mb-2 main-stage" style="--stagger-index: 0;">Gyro Cards</h1>
+    <p class="text-secondary mb-4 main-stage" style="--stagger-index: 1;">Learn with motion</p>
 
     <!-- Karte -->
-    <div id="card" class="card">
+    <div id="card" class="card main-stage" style="--stagger-index: 2;">
       <div class="card-inner">
         <div class="card-face card-front d-flex flex-column align-items-center justify-content-center p-4">
           <div class="card-label">Question</div>
@@ -151,14 +151,14 @@
     </div>
 
     <!-- Dev-Buttons (temporär) -->
-    <div class="mt-3 d-flex gap-2 justify-content-center">
+    <div class="mt-3 d-flex gap-2 justify-content-center main-stage" style="--stagger-index: 3;">
       <button id="flipButton" class="btn btn-secondary">reveal</button>
       <button id="dontKnowButton" class="btn btn-outline-danger" aria-label="Konnte ich nicht">👎</button>
       <button id="knowButton" class="btn btn-outline-success" aria-label="Konnte ich">👍</button>
     </div>
 
     <!-- Progress Indicator -->
-    <div id="progressIndicator" class="progress-indicator mt-4">
+    <div id="progressIndicator" class="progress-indicator mt-4 main-stage" style="--stagger-index: 4;">
       <div class="progress-stats">
         <div class="progress-item">
           <span class="progress-label">Due Today:</span>
@@ -172,7 +172,7 @@
       </div>
     </div>
 
-    <p class="mt-4 text-secondary">
+    <p class="mt-4 text-secondary main-stage" style="--stagger-index: 5;">
       ↪ Tilt <strong>right</strong> when you know the answer <br>
       ↩ Tilt <strong>left</strong> when you don't know the answer
     </p>

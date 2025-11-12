@@ -190,6 +190,7 @@ let dueCards = [];
   const edgeGlow = document.getElementById("edgeGlow");
   const cardLabels = document.querySelectorAll('.card-label');
   const orientationOverlay = document.getElementById("orientationOverlay");
+  let mainStageActivated = false;
   let isShowingAnswer = false;
   let isAnimating = false;
   let isCardFlipped = false;
@@ -328,6 +329,14 @@ let dueCards = [];
       }
     }
 
+  }
+
+  function activateMainStage() {
+    if (mainStageActivated) return;
+    mainStageActivated = true;
+    requestAnimationFrame(() => {
+      document.body.classList.add("app-ready");
+    });
   }
   
   function isMobileDevice() {
@@ -670,6 +679,7 @@ let dueCards = [];
       resetCharSpans(welcomePage);
       resetCharSpans(permissionPage);
       resetCharSpans(instructionsPage);
+      activateMainStage();
     }, 400); // Match the transition duration
   }
   
