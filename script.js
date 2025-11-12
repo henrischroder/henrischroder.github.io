@@ -6,7 +6,24 @@ if (flashcards.length === 0) {
   flashcards = [
     { question: "What is HTML?", answer: "HyperText Markup Language" },
     { question: "How to declare a variable in JS?", answer: "let or const" },
-    { question: "CSS stands for…", answer: "Cascading Style Sheets" }
+    { question: "CSS stands for…", answer: "Cascading Style Sheets" },
+    { question: "What does DOM stand for?", answer: "Document Object Model" },
+    { question: "What is a closure in JavaScript?", answer: "A function that has access to variables in its outer scope" },
+    { question: "What is the difference between == and === in JavaScript?", answer: "== compares values with type coercion, === compares values and types" },
+    { question: "What is a promise in JavaScript?", answer: "An object representing the eventual completion or failure of an async operation" },
+    { question: "What is async/await?", answer: "Syntax for handling asynchronous operations in JavaScript" },
+    { question: "What is the box model in CSS?", answer: "Content, padding, border, and margin" },
+    { question: "What is flexbox?", answer: "A CSS layout method for arranging items in a container" },
+    { question: "What is grid in CSS?", answer: "A two-dimensional layout system for web pages" },
+    { question: "What is a REST API?", answer: "Representational State Transfer - an architectural style for web services" },
+    { question: "What is JSON?", answer: "JavaScript Object Notation - a data interchange format" },
+    { question: "What is Git?", answer: "A distributed version control system" },
+    { question: "What is a branch in Git?", answer: "A parallel version of a repository" },
+    { question: "What is npm?", answer: "Node Package Manager - package manager for JavaScript" },
+    { question: "What is React?", answer: "A JavaScript library for building user interfaces" },
+    { question: "What is a component in React?", answer: "A reusable piece of UI code" },
+    { question: "What is state in React?", answer: "Data that can change over time in a component" },
+    { question: "What is useEffect in React?", answer: "A hook for performing side effects in functional components" }
   ];
   // Initialize progress data for default cards
   flashcards = flashcards.map(card => initializeCardProgress(card));
@@ -239,6 +256,9 @@ let dueCards = [];
     cardText.innerText = currentCard.question;
     cardAnswer.innerText = currentCard.answer;
     cardQuestionBack.innerText = currentCard.question;
+    // Adjust font size to fit text
+    adjustTextSize(cardText);
+    adjustTextSize(cardAnswer);
     // Show labels for regular cards
     cardLabels.forEach(label => {
       label.style.display = '';
@@ -248,6 +268,52 @@ let dueCards = [];
     hideActionButtons();
     updateButtonGap();
     updateProgressIndicator();
+  }
+  
+  // Adjust text size to fit within card
+  function adjustTextSize(element) {
+    if (!element) return;
+    
+    // Reset to default size
+    element.style.fontSize = '';
+    
+    // Get card dimensions
+    const card = document.getElementById('card');
+    const cardWidth = card.offsetWidth;
+    const cardHeight = card.offsetHeight;
+    const maxWidth = cardWidth - 40; // Account for padding
+    const maxHeight = cardHeight * 0.5; // Use about half the card height for text
+    
+    // Measure text
+    const text = element.innerText;
+    const wordCount = text.split(/\s+/).length;
+    const charCount = text.length;
+    
+    // Calculate appropriate font size based on text length
+    let fontSize = 1.5; // Default in rem
+    
+    if (charCount > 200 || wordCount > 30) {
+      fontSize = 0.875; // Very long text
+    } else if (charCount > 100 || wordCount > 20) {
+      fontSize = 1.0; // Long text
+    } else if (charCount > 50 || wordCount > 10) {
+      fontSize = 1.25; // Medium text
+    }
+    
+    // Apply font size
+    element.style.fontSize = `${fontSize}rem`;
+    
+    // Fine-tune if text still overflows
+    setTimeout(() => {
+      const scrollHeight = element.scrollHeight;
+      const clientHeight = element.clientHeight;
+      
+      if (scrollHeight > clientHeight && fontSize > 0.75) {
+        // Reduce font size if text overflows
+        fontSize = Math.max(0.75, fontSize - 0.125);
+        element.style.fontSize = `${fontSize}rem`;
+      }
+    }, 10);
   }
   
   // Update progress indicator
