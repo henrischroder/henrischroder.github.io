@@ -128,10 +128,10 @@
     text-align: center;
     max-width: 90%;
     line-height: 1.4;
-    overflow-wrap: normal !important;
-    word-wrap: normal !important;
-    word-break: keep-all !important;
-    hyphens: none !important;
+    overflow-wrap: anywhere !important;
+    word-wrap: anywhere !important;
+    word-break: normal !important;
+    hyphens: auto !important;
     white-space: normal !important;
 }
 

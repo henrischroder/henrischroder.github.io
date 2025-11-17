@@ -656,13 +656,17 @@ let dueCards = [];
       const chars = [...text];
       
       chars.forEach(char => {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = char === ' ' ? '\u00A0' : char; // Non-breaking space for spaces
-        const charDelay = Math.min(globalCharIndex * 0.009, 0.6);
-        span.style.animationDelay = `${charDelay}s`;
-        fragment.appendChild(span);
-        globalCharIndex++;
+        if (char === ' ') {
+          fragment.appendChild(document.createTextNode(' '));
+        } else {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = char;
+          const charDelay = Math.min(globalCharIndex * 0.009, 0.6);
+          span.style.animationDelay = `${charDelay}s`;
+          fragment.appendChild(span);
+          globalCharIndex++;
+        }
       });
       
       parent.replaceChild(fragment, textNode);
