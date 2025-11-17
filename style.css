@@ -137,10 +137,10 @@
 
 #card-text,
 #card-answer {
-    overflow-wrap: normal !important;
-    word-wrap: normal !important;
-    word-break: keep-all !important;
-    hyphens: none !important;
+    overflow-wrap: anywhere !important;
+    word-wrap: anywhere !important;
+    word-break: normal !important;
+    hyphens: auto !important;
     white-space: normal !important;
     max-width: 100%;
     padding: 0 1rem;
