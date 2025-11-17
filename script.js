@@ -583,6 +583,7 @@ let dueCards = [];
     welcomePage.classList.remove("hide");
     permissionPage.style.display = "none";
     instructionsPage.style.display = "none";
+    instructionsPage.classList.remove("showing");
     permissionOverlay.classList.add("show");
     
     // Wrap text in character spans after a brief delay to ensure page is visible
@@ -658,7 +659,8 @@ let dueCards = [];
         const span = document.createElement('span');
         span.className = 'char';
         span.textContent = char === ' ' ? '\u00A0' : char; // Non-breaking space for spaces
-        span.style.animationDelay = `${globalCharIndex * 0.015}s`;
+        const charDelay = Math.min(globalCharIndex * 0.009, 0.6);
+        span.style.animationDelay = `${charDelay}s`;
         fragment.appendChild(span);
         globalCharIndex++;
       });
@@ -669,12 +671,21 @@ let dueCards = [];
     // Animate buttons with staggered delay based on total character count
     const buttons = element.querySelectorAll('button, a');
     buttons.forEach((button, buttonIndex) => {
-      // Calculate delay: after all text characters + staggered per button
-      const buttonDelay = globalCharIndex * 0.015 + (buttonIndex * 0.1) + 0.2;
+      // Calculate delay: after text characters + staggered per button
+      const baseDelay = Math.min(globalCharIndex * 0.009, 0.6);
+      const buttonDelay = baseDelay + (buttonIndex * 0.07) + 0.1;
       button.style.opacity = '0';
       button.style.transform = 'translateY(15px)';
       button.style.animation = 'buttonFadeIn 0.5s ease-out forwards';
       button.style.animationDelay = `${buttonDelay}s`;
+    });
+  }
+
+  function applyInstructionDelays() {
+    if (!instructionsPage) return;
+    const animatedElements = instructionsPage.querySelectorAll('.instructions-content > *, #gotItBtn');
+    animatedElements.forEach((el, index) => {
+      el.style.setProperty('--instruction-delay', `${0.12 + index * 0.08}s`);
     });
   }
   
@@ -686,6 +697,8 @@ let dueCards = [];
       welcomePage.classList.remove("hide");
       resetCharSpans(welcomePage);
     }
+    
+    instructionsPage.classList.remove("showing");
     
     // Show permission page
     permissionPage.style.display = "block";
@@ -733,6 +746,8 @@ let dueCards = [];
     // Show instructions page immediately
     instructionsPage.style.display = "block";
     instructionsPage.classList.remove("hide");
+    instructionsPage.classList.remove("showing");
+    resetCharSpans(instructionsPage);
     
     if (hasGestureSupport) {
       gestureInstructions.style.display = "block";
@@ -743,9 +758,11 @@ let dueCards = [];
     }
     
     permissionOverlay.classList.add("show");
+    applyInstructionDelays();
     
     // Wrap text in character spans after a brief delay to ensure page is visible
     requestAnimationFrame(() => {
+      instructionsPage.classList.add("showing");
       wrapTextInChars(instructionsPage);
     });
   }
@@ -761,6 +778,7 @@ let dueCards = [];
       welcomePage.classList.remove("hide");
       permissionPage.classList.remove("hide");
       instructionsPage.classList.remove("hide");
+      instructionsPage.classList.remove("showing");
       permissionOverlay.classList.remove("fade-out");
       
       // Reset character spans for next time
@@ -936,7 +954,9 @@ let dueCards = [];
           <div class="card-item-question">${escapeHtml(card.question)}</div>
           <div class="card-item-answer">${escapeHtml(card.answer)}</div>
         </div>
-        <button class="btn btn-sm btn-outline-danger card-item-remove" data-index="${index}">🗑️</button>
+        <button class="btn btn-sm btn-outline-danger card-item-remove" data-index="${index}" aria-label="Remove card">
+          <i class="bi bi-trash" aria-hidden="true"></i>
+        </button>
       `;
       cardsList.appendChild(cardItem);
     });

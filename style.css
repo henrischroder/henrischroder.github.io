@@ -357,6 +357,26 @@ body {
     color: white;
 }
 
+.icon-inline {
+    margin-right: 0.35rem;
+    font-size: 1.1em;
+    vertical-align: -0.05em;
+}
+
+#instructionsPage .instructions-content > *,
+#instructionsPage #gotItBtn {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition-delay: var(--instruction-delay, 0s);
+}
+
+#instructionsPage.showing .instructions-content > *,
+#instructionsPage.showing #gotItBtn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .skip-link {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
