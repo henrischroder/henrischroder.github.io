@@ -1,3 +1,11 @@
+/**
+ * Flashcards application
+ * ----------------------
+ * Handles flashcard rendering, spaced repetition, gesture controls,
+ * overlays, drawers, and UI animations. Structure is intentionally
+ * documented to keep the file readable despite its size.
+ */
+
 // Load flashcards from local storage or use default
 let flashcards = loadFlashcardsFromStorage();
 
@@ -207,6 +215,7 @@ let dueCards = [];
   const edgeGlow = document.getElementById("edgeGlow");
   const cardLabels = document.querySelectorAll('.card-label');
   const orientationOverlay = document.getElementById("orientationOverlay");
+  const progressIndicator = document.getElementById("progressIndicator");
   const tiltInstructions = document.getElementById("tiltInstructions");
   let mainStageActivated = false;
   let isShowingAnswer = false;
@@ -316,6 +325,17 @@ let dueCards = [];
     }, 10);
   }
   
+  /**
+   * Controls the vertical spacing between the flashcard and the progress indicator.
+   * When gesture controls are active we pull the indicator closer to avoid large
+   * empty areas.
+   */
+  function setProgressSpacing(isCompact) {
+    if (!progressIndicator) return;
+    progressIndicator.style.marginTop = isCompact ? '0.5rem' : '1.5rem';
+    progressIndicator.classList.toggle('compact', isCompact);
+  }
+
   // Update progress indicator
   function updateProgressIndicator() {
     const stats = getProgressStats();
@@ -333,6 +353,7 @@ let dueCards = [];
   // Initialize on load
   initializeDueCards();
   showCard();
+  setProgressSpacing(false);
   updateOrientationLock();
   window.addEventListener("resize", updateOrientationLock);
   window.addEventListener("orientationchange", updateOrientationLock);
@@ -857,9 +878,11 @@ let dueCards = [];
   }
   
   // Function to update button visibility based on permission state
+  /**
+   * Shows/hides control buttons depending on whether gesture controls are available.
+   * Also toggles instructional text and adjusts spacing so the layout remains tight.
+   */
   function updateButtonVisibility() {
-    const progressIndicator = document.getElementById('progressIndicator');
-    
     if (hasPermission) {
       // Hide buttons when gesture controls are available
       buttonContainer.style.display = 'none';
@@ -870,10 +893,7 @@ let dueCards = [];
       if (tiltInstructions) {
         tiltInstructions.style.display = 'block';
       }
-      // Reduce spacing between card and progress indicator when buttons are hidden
-      if (progressIndicator) {
-        progressIndicator.style.marginTop = '1rem';
-      }
+      setProgressSpacing(true);
     } else {
       // Show buttons when gesture controls are not available
       buttonContainer.style.display = 'flex';
@@ -884,10 +904,7 @@ let dueCards = [];
       if (tiltInstructions) {
         tiltInstructions.style.display = 'none';
       }
-      // Restore normal spacing when buttons are visible
-      if (progressIndicator) {
-        progressIndicator.style.marginTop = '';
-      }
+      setProgressSpacing(false);
     }
   }
   

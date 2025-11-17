@@ -679,6 +679,11 @@ body.app-ready .main-stage {
 .progress-indicator {
     max-width: 500px;
     margin: 0 auto;
+    transition: margin-top 0.2s ease;
+}
+
+.progress-indicator.compact {
+    margin-top: 0.5rem !important;
 }
 
 .progress-stats {
