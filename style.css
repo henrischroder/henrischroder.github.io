@@ -1,6 +1,6 @@
 * {
     word-break: normal !important;
-    overflow-wrap: normal !important;
+    overflow-wrap: break-word !important;
     white-space: normal !important;
 }
 
@@ -289,6 +289,9 @@ body {
     overflow-y: auto;
     text-align: center;
     color: white;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .permission-overlay-content h2 {
@@ -297,6 +300,9 @@ body {
 
 .permission-overlay-content p {
     color: white;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 /* Character-by-character animation for overlay pages */
@@ -304,9 +310,12 @@ body {
 #welcomePage .char,
 #permissionPage .char,
 #instructionsPage .char {
-    display: inline-block;
+    display: inline;
     opacity: 0;
     animation: charFadeIn 0.4s ease-out forwards;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 @keyframes charFadeIn {
