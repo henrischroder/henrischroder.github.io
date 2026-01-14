@@ -16,12 +16,10 @@ if (flashcards.length === 0) {
     { question: "How to declare a variable in JS?", answer: "let or const" },
     { question: "CSS stands for…", answer: "Cascading Style Sheets" },
     { question: "What does DOM stand for?", answer: "Document Object Model" },
-    { question: "What is a closure in JavaScript?", answer: "A function that has access to variables in its outer scope" },
     { question: "What is async/await?", answer: "Syntax for handling asynchronous operations in JavaScript" },
     { question: "What is the box model in CSS?", answer: "Content, padding, border, and margin" },
     { question: "What is flexbox?", answer: "A CSS layout method for arranging items in a container" },
     { question: "What is grid in CSS?", answer: "A two-dimensional layout system for web pages" },
-    { question: "What is a REST API?", answer: "Representational State Transfer - an architectural style for web services" },
     { question: "What is JSON?", answer: "JavaScript Object Notation - a data interchange format" },
     { question: "What is Git?", answer: "A distributed version control system" },
     { question: "What is a branch in Git?", answer: "A parallel version of a repository" },
@@ -29,7 +27,6 @@ if (flashcards.length === 0) {
     { question: "What is React?", answer: "A JavaScript library for building user interfaces" },
     { question: "What is a component in React?", answer: "A reusable piece of UI code" },
     { question: "What is state in React?", answer: "Data that can change over time in a component" },
-    { question: "What is useEffect in React?", answer: "A hook for performing side effects in functional components" }
   ];
   // Initialize progress data for default cards
   flashcards = flashcards.map(card => initializeCardProgress(card));
@@ -389,24 +386,36 @@ function hideActionButtons() {
   updateButtonGap();
 }
 
+// Tilt state
+let currentTilt = 0;
+let currentForwardTilt = 0;
+let lastTimestamp = 0;
+
 // Funktion, die auf Rotation reagiert
 function handleTilt(event) {
-  if (isAnimating) return;
+  currentTilt = event.gamma; // -90 bis +90 (links/rechts)
+  currentForwardTilt = typeof event.beta === "number" ? event.beta : null; // -180 bis 180 (vor/zurück)
+}
 
-  const tilt = event.gamma; // -90 bis +90 (links/rechts)
-  const forwardTilt = typeof event.beta === "number" ? event.beta : null; // -180 bis 180 (vor/zurück)
+function gameLoop(timestamp) {
+  requestAnimationFrame(gameLoop);
+
+  // Calculate delta time for smooth animations independent of frame rate
+  // const deltaTime = timestamp - lastTimestamp;
+  // lastTimestamp = timestamp;
+
+  if (isAnimating) return;
 
   const progressBar = document.getElementById("revealProgressBar");
 
   // Hold-to-reveal logic
-  if (!isCardFlipped && forwardTilt !== null) {
-    if (forwardTilt > 35) { // Threshold to start filling
-      // Calculate progress (e.g. from 35° to 60° = 0% to 100%)
-      // Or simple linear increment
+  if (!isCardFlipped && currentForwardTilt !== null) {
+    if (currentForwardTilt > 35) { // Threshold to start filling
       if (!window.revealProgress) window.revealProgress = 0;
 
       // Increase progress
-      window.revealProgress += 1.0; // Fill up in ~100 frames (approx 1.6s at 60fps)
+      // Fixed increment per frame (assuming ~60fps) - adjusted for smoothness
+      window.revealProgress += 1.0;
 
       if (window.revealProgress >= 100) {
         window.revealProgress = 100;
@@ -416,7 +425,6 @@ function handleTilt(event) {
           window.revealProgress = 0;
           if (progressBar) progressBar.style.width = "0%";
         }, 500);
-        return;
       }
     } else {
       // Reset if tilt is released
@@ -426,33 +434,30 @@ function handleTilt(event) {
     // Update UI
     if (progressBar) {
       progressBar.style.width = `${window.revealProgress}%`;
-      // Optional: Change color based on progress or state
       progressBar.style.opacity = window.revealProgress > 0 ? "1" : "0";
     }
   }
 
   // Karte leicht mit kippen lassen (works on both front and back)
-  // Always apply tilt rotation regardless of flip state
-  if (tilt !== null && tilt !== undefined) {
-    const tiltRotation = tilt / 3;
-    // Update CSS variable - this will be used by the CSS transform
+  if (currentTilt !== null && currentTilt !== undefined) {
+    const tiltRotation = currentTilt / 3;
     card.style.setProperty("--tilt-rotation", `${tiltRotation}deg`);
   }
 
   // Gesture actions only work when card is flipped
   if (isCardFlipped) {
-    if (tilt > 45) {
-      // Gut gekonnt → nächste Karte
+    if (currentTilt > 45) {
       markKnown();
     }
 
-    if (tilt < -45) {
-      // Nicht gekonnt → Karte ans Ende setzen
+    if (currentTilt < -45) {
       markUnknown();
     }
   }
-
 }
+
+// Start the loop
+requestAnimationFrame(gameLoop);
 
 function activateMainStage() {
   if (mainStageActivated) return;
