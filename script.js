@@ -407,7 +407,7 @@ function handleTilt(event) {
       if (!window.revealProgress) window.revealProgress = 0;
 
       // Increase progress
-      window.revealProgress += 2.5; // Fill up in ~40 frames (approx 0.7s at 60fps)
+      window.revealProgress += 1.0; // Fill up in ~100 frames (approx 1.6s at 60fps)
 
       if (window.revealProgress >= 100) {
         window.revealProgress = 100;
