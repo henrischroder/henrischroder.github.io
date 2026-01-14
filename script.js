@@ -397,7 +397,7 @@ let dueCards = [];
     const tilt = event.gamma; // -90 bis +90 (links/rechts)
     const forwardTilt = typeof event.beta === "number" ? event.beta : null; // -180 bis 180 (vor/zurück)
 
-    if (!isCardFlipped && forwardTilt !== null && forwardTilt > 25) {
+    if (!isCardFlipped && forwardTilt !== null && forwardTilt > 40) {
       flipCard();
       return;
     }
@@ -412,12 +412,12 @@ let dueCards = [];
   
     // Gesture actions only work when card is flipped
     if (isCardFlipped) {
-      if (tilt > 30) {
+      if (tilt > 45) {
         // Gut gekonnt → nächste Karte
         markKnown();
       }
   
-      if (tilt < -30) {
+      if (tilt < -45) {
         // Nicht gekonnt → Karte ans Ende setzen
         markUnknown();
       }
