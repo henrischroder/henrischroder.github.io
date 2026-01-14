@@ -17,8 +17,6 @@ if (flashcards.length === 0) {
     { question: "CSS stands for…", answer: "Cascading Style Sheets" },
     { question: "What does DOM stand for?", answer: "Document Object Model" },
     { question: "What is a closure in JavaScript?", answer: "A function that has access to variables in its outer scope" },
-    { question: "What is the difference between == and === in JavaScript?", answer: "== compares values with type coercion, === compares values and types" },
-    { question: "What is a promise in JavaScript?", answer: "An object representing the eventual completion or failure of an async operation" },
     { question: "What is async/await?", answer: "Syntax for handling asynchronous operations in JavaScript" },
     { question: "What is the box model in CSS?", answer: "Content, padding, border, and margin" },
     { question: "What is flexbox?", answer: "A CSS layout method for arranging items in a container" },
@@ -242,8 +240,9 @@ function showCard() {
     // Refresh due cards one more time to make sure we're not missing any
     initializeDueCards();
     if (dueCards.length === 0) {
-      cardText.innerText = "🎉 All Cards done for today!";
-      cardAnswer.innerText = "🎉 All Cards done for today!";
+      const completionHtml = '<i class="bi bi-check-circle-fill text-success" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>All Cards done for today!';
+      cardText.innerHTML = completionHtml;
+      cardAnswer.innerHTML = completionHtml;
       cardQuestionBack.innerText = "";
       // Hide labels for completion message
       cardLabels.forEach(label => {
