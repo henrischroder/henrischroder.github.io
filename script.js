@@ -414,8 +414,8 @@ function gameLoop(timestamp) {
       if (!window.revealProgress) window.revealProgress = 0;
 
       // Increase progress
-      // Fixed increment per frame (assuming ~60fps) - adjusted for 0.5s duration
-      window.revealProgress += 3.33;
+      // Fixed increment per frame (assuming ~60fps) - adjusted for ~0.4s duration (20% faster)
+      window.revealProgress += 4.16;
 
       if (window.revealProgress >= 100) {
         window.revealProgress = 100;
