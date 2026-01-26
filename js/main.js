@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             UI.elements.drawer.classList.add("open");
             UI.elements.drawerBackdrop.style.visibility = "visible";
             UI.elements.drawerBackdrop.style.opacity = "1";
+            UI.renderCardsList(state.flashcards, deleteCard);
         });
     }
 
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             UI.elements.statsDrawer.classList.add("open");
             UI.elements.drawerBackdrop.style.visibility = "visible";
             UI.elements.drawerBackdrop.style.opacity = "1";
+            UI.renderStats(getProgressStats(state.flashcards));
         });
     }
 
@@ -148,6 +150,54 @@ document.addEventListener('DOMContentLoaded', () => {
             UI.elements.drawerBackdrop.style.opacity = "0";
             setTimeout(() => UI.elements.drawerBackdrop.style.visibility = "hidden", 300);
         });
+    }
+
+    // Card Management Logic
+    if (UI.elements.addCardBtn) {
+        UI.elements.addCardBtn.addEventListener("click", () => {
+            const question = UI.elements.newQuestion.value.trim();
+            const answer = UI.elements.newAnswer.value.trim();
+
+            if (question && answer) {
+                const newCard = { question, answer };
+                state.flashcards.push(initializeCardProgress(newCard));
+                saveFlashcardsToStorage(state.flashcards);
+
+                // Clear inputs
+                UI.elements.newQuestion.value = '';
+                UI.elements.newAnswer.value = '';
+
+                // Refresh UI
+                UI.renderCardsList(state.flashcards, deleteCard);
+                Game.initializeDueCards(false); // Refresh due cards without resetting index
+                alert('Card added!');
+            } else {
+                alert('Please fill in both question and answer.');
+            }
+        });
+    }
+
+    if (UI.elements.resetStackBtn) {
+        UI.elements.resetStackBtn.addEventListener("click", () => {
+            if (confirm("Are you sure you want to reset all learning progress? This cannot be undone.")) {
+                state.flashcards = state.flashcards.map(card => initializeCardProgress({
+                    question: card.question,
+                    answer: card.answer
+                }));
+                saveFlashcardsToStorage(state.flashcards);
+                Game.initializeDueCards();
+                Game.showCurrentCard();
+                alert("Progress reset!");
+            }
+        });
+    }
+
+    function deleteCard(index) {
+        state.flashcards.splice(index, 1);
+        saveFlashcardsToStorage(state.flashcards);
+        UI.renderCardsList(state.flashcards, deleteCard);
+        Game.initializeDueCards(); // Refresh game state
+        Game.showCurrentCard();
     }
 
     // Start Game Loop

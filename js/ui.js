@@ -44,6 +44,15 @@ export function initDOM() {
     elements.statsToggle = document.getElementById("statsToggle");
     elements.drawerClose = document.getElementById("drawerClose");
     elements.statsClose = document.getElementById("statsClose");
+
+    // Drawer Content
+    elements.statsContent = document.getElementById("statsContent");
+    elements.cardsList = document.getElementById("cardsList");
+    elements.newQuestion = document.getElementById("newQuestion");
+    elements.newAnswer = document.getElementById("newAnswer");
+    elements.addCardBtn = document.getElementById("addCardBtn");
+    elements.resetStackBtn = document.getElementById("resetStackBtn");
+    elements.cardCount = document.getElementById("cardCount");
 }
 
 export function adjustTextSize(element) {
@@ -220,4 +229,91 @@ export function closeOverlay() {
         elements.permissionOverlay.style.display = "none";
         elements.permissionOverlay.classList.remove("fade-out");
     }, 400);
+}
+
+export function renderStats(stats) {
+    if (!elements.statsContent) return;
+
+    // Calculate mastery percentage safely
+    let accuracy = 0;
+    if (stats.totalReviews > 0) {
+        accuracy = Math.round((stats.correctReviews / stats.totalReviews) * 100);
+    }
+
+    elements.statsContent.innerHTML = `
+      <div class="stat-item">
+        <div class="stat-label">Total Cards</div>
+        <div class="stat-value">${stats.total}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Due Today</div>
+        <div class="stat-value">${stats.dueToday}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Mastered</div>
+        <div class="stat-value">${stats.mastered}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Total Reviews</div>
+        <div class="stat-value">${stats.totalReviews}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Correct Reviews</div>
+        <div class="stat-value">${stats.correctReviews}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Accuracy</div>
+        <div class="stat-value">${accuracy}%</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Average Ease Factor</div>
+        <div class="stat-value">${stats.averageEase}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Difficulty Distribution</div>
+        <div style="margin-top: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="badge badge-easy">${stats.easy} Easy</span>
+            <span class="badge badge-normal">${stats.normal} Normal</span>
+            <span class="badge badge-hard">${stats.hard} Hard</span>
+          </div>
+        </div>
+      </div>
+    `;
+}
+
+export function renderCardsList(flashcards, onDelete) {
+    if (!elements.cardsList || !elements.cardCount) return;
+
+    elements.cardCount.innerText = flashcards.length;
+    elements.cardsList.innerHTML = '';
+
+    if (flashcards.length === 0) {
+        elements.cardsList.innerHTML = '<div class="text-center text-secondary py-4">No cards yet. Add one above!</div>';
+        return;
+    }
+
+    flashcards.forEach((card, index) => {
+        const item = document.createElement('div');
+        item.className = 'card-item';
+        item.innerHTML = `
+            <div class="card-item-content">
+                <div class="card-item-question">${card.question}</div>
+                <div class="card-item-answer">${card.answer}</div>
+            </div>
+            <button class="btn btn-sm btn-outline-danger card-item-remove" data-index="${index}">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+
+        const deleteBtn = item.querySelector('.card-item-remove');
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm('Delete this card?')) {
+                onDelete(index);
+            }
+        });
+
+        elements.cardsList.appendChild(item);
+    });
 }
