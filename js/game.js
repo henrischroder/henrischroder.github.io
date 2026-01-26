@@ -11,7 +11,7 @@ export function initializeDueCards(resetIndex = true) {
     } else if (state.currentIndex >= state.dueCards.length) {
         state.currentIndex = 0;
     }
-    UI.updateProgressIndicator(getProgressStats());
+    UI.updateProgressIndicator(getProgressStats(state.flashcards));
 }
 
 export function showCurrentCard() {
@@ -19,7 +19,7 @@ export function showCurrentCard() {
         initializeDueCards();
         if (state.dueCards.length === 0) {
             UI.showCompletionMessage();
-            UI.updateProgressIndicator(getProgressStats());
+            UI.updateProgressIndicator(getProgressStats(state.flashcards));
             return;
         }
         state.currentIndex = 0;
@@ -30,7 +30,7 @@ export function showCurrentCard() {
     state.revealProgress = 0;
 
     UI.renderCard(state.dueCards[state.currentIndex]);
-    UI.updateProgressIndicator(getProgressStats());
+    UI.updateProgressIndicator(getProgressStats(state.flashcards));
 }
 
 export function nextCard() {
@@ -93,7 +93,7 @@ export function markKnown() {
             state.currentIndex = 0;
         }
 
-        UI.updateProgressIndicator(getProgressStats());
+        UI.updateProgressIndicator(getProgressStats(state.flashcards));
         showCurrentCard();
         UI.elements.card.classList.add('fade-in');
         setTimeout(() => UI.elements.card.classList.remove('fade-in'), 500);
@@ -126,7 +126,7 @@ export function markUnknown() {
         if (state.currentIndex >= state.dueCards.length) {
             state.currentIndex = 0;
         }
-        UI.updateProgressIndicator(getProgressStats());
+        UI.updateProgressIndicator(getProgressStats(state.flashcards));
         nextCard(); // This might be redundant or double-call nextCard logic? nextCard handles increment too.
         // Logic in script.js was: currentIndex++, then nextCard().
         // nextCard() calls initializeDueCards(false) -> checks length -> increments index again?
