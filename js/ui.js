@@ -1,48 +1,50 @@
 import { wrapTextInChars, resetCharSpans, isMobileDevice } from './utils.js';
 
-export const elements = {
-    card: document.getElementById("card"),
-    cardText: document.getElementById("card-text"),
-    cardAnswer: document.getElementById("card-answer"),
-    cardQuestionBack: document.getElementById("card-question-back"),
-    flipButton: document.getElementById("flipButton"),
-    knowButton: document.getElementById("knowButton"),
-    dontKnowButton: document.getElementById("dontKnowButton"),
-    buttonContainer: document.querySelector('.mt-3.d-flex'),
-    edgeGlow: document.getElementById("edgeGlow"),
-    cardLabels: document.querySelectorAll('.card-label'),
-    orientationOverlay: document.getElementById("orientationOverlay"),
-    progressIndicator: document.getElementById("progressIndicator"),
-    tiltInstructions: document.getElementById("tiltInstructions"),
-    revealProgressBar: document.getElementById("revealProgressBar"),
+export const elements = {};
+
+export function initDOM() {
+    elements.card = document.getElementById("card");
+    elements.cardText = document.getElementById("card-text");
+    elements.cardAnswer = document.getElementById("card-answer");
+    elements.cardQuestionBack = document.getElementById("card-question-back");
+    elements.flipButton = document.getElementById("flipButton");
+    elements.knowButton = document.getElementById("knowButton");
+    elements.dontKnowButton = document.getElementById("dontKnowButton");
+    elements.buttonContainer = document.querySelector('.mt-3.d-flex');
+    elements.edgeGlow = document.getElementById("edgeGlow");
+    elements.cardLabels = document.querySelectorAll('.card-label');
+    elements.orientationOverlay = document.getElementById("orientationOverlay");
+    elements.progressIndicator = document.getElementById("progressIndicator");
+    elements.tiltInstructions = document.getElementById("tiltInstructions");
+    elements.revealProgressBar = document.getElementById("revealProgressBar");
 
     // Overlays
-    permissionOverlay: document.getElementById("permissionOverlay"),
-    welcomePage: document.getElementById("welcomePage"),
-    permissionPage: document.getElementById("permissionPage"),
-    instructionsPage: document.getElementById("instructionsPage"),
-    welcomeContinueBtn: document.getElementById("welcomeContinueBtn"),
-    requestPermissionBtn: document.getElementById("requestPermissionBtn"),
-    skipPermissionBtn: document.getElementById("skipPermissionBtn"),
-    gotItBtn: document.getElementById("gotItBtn"),
-    gestureInstructions: document.getElementById("gestureInstructions"),
-    buttonInstructions: document.getElementById("buttonInstructions"),
+    elements.permissionOverlay = document.getElementById("permissionOverlay");
+    elements.welcomePage = document.getElementById("welcomePage");
+    elements.permissionPage = document.getElementById("permissionPage");
+    elements.instructionsPage = document.getElementById("instructionsPage");
+    elements.welcomeContinueBtn = document.getElementById("welcomeContinueBtn");
+    elements.requestPermissionBtn = document.getElementById("requestPermissionBtn");
+    elements.skipPermissionBtn = document.getElementById("skipPermissionBtn");
+    elements.gotItBtn = document.getElementById("gotItBtn");
+    elements.gestureInstructions = document.getElementById("gestureInstructions");
+    elements.buttonInstructions = document.getElementById("buttonInstructions");
 
     // Stats
-    dueTodayCount: document.getElementById("dueTodayCount"),
-    easyCount: document.getElementById("easyCount"),
-    normalCount: document.getElementById("normalCount"),
-    hardCount: document.getElementById("hardCount"),
+    elements.dueTodayCount = document.getElementById("dueTodayCount");
+    elements.easyCount = document.getElementById("easyCount");
+    elements.normalCount = document.getElementById("normalCount");
+    elements.hardCount = document.getElementById("hardCount");
 
     // Drawer
-    drawer: document.getElementById("drawer"),
-    statsDrawer: document.getElementById("statsDrawer"),
-    drawerBackdrop: document.getElementById("drawerBackdrop"),
-    drawerToggle: document.getElementById("drawerToggle"),
-    statsToggle: document.getElementById("statsToggle"),
-    drawerClose: document.getElementById("drawerClose"),
-    statsClose: document.getElementById("statsClose")
-};
+    elements.drawer = document.getElementById("drawer");
+    elements.statsDrawer = document.getElementById("statsDrawer");
+    elements.drawerBackdrop = document.getElementById("drawerBackdrop");
+    elements.drawerToggle = document.getElementById("drawerToggle");
+    elements.statsToggle = document.getElementById("statsToggle");
+    elements.drawerClose = document.getElementById("drawerClose");
+    elements.statsClose = document.getElementById("statsClose");
+}
 
 export function adjustTextSize(element) {
     if (!element) return;
