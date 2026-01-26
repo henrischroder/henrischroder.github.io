@@ -37,7 +37,11 @@ export const elements = {
     // Drawer
     drawer: document.getElementById("drawer"),
     statsDrawer: document.getElementById("statsDrawer"),
-    drawerBackdrop: document.getElementById("drawerBackdrop")
+    drawerBackdrop: document.getElementById("drawerBackdrop"),
+    drawerToggle: document.getElementById("drawerToggle"),
+    statsToggle: document.getElementById("statsToggle"),
+    drawerClose: document.getElementById("drawerClose"),
+    statsClose: document.getElementById("statsClose")
 };
 
 export function adjustTextSize(element) {

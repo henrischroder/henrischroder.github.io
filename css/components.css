@@ -64,6 +64,13 @@
     border: none;
 }
 
+/* Hide buttons when in gesture mode */
+body.gesture-mode #flipButton,
+body.gesture-mode #knowButton,
+body.gesture-mode #dontKnowButton {
+    display: none !important;
+}
+
 #drawerToggle,
 #statsToggle {
     background: white;

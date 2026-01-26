@@ -71,6 +71,7 @@ if (UI.elements.requestPermissionBtn) {
                 const permissionState = await DeviceOrientationEvent.requestPermission();
                 if (permissionState === 'granted') {
                     state.hasPermission = true;
+                    document.body.classList.add("gesture-mode");
                     UI.showInstructionsOverlay(true);
                 } else {
                     alert("Permission denied. The app requires orientation sensors to work.");
@@ -81,6 +82,7 @@ if (UI.elements.requestPermissionBtn) {
         } else {
             // Non-iOS 13+ devices
             state.hasPermission = true;
+            document.body.classList.add("gesture-mode");
             UI.showInstructionsOverlay(true);
         }
     });
@@ -98,6 +100,48 @@ if (UI.elements.gotItBtn) {
     UI.elements.gotItBtn.addEventListener("click", () => {
         UI.closeOverlay();
         UI.activateMainStage();
+    });
+}
+
+// Drawer Controls
+if (UI.elements.drawerToggle) {
+    UI.elements.drawerToggle.addEventListener("click", () => {
+        UI.elements.drawer.classList.add("open");
+        UI.elements.drawerBackdrop.style.visibility = "visible";
+        UI.elements.drawerBackdrop.style.opacity = "1";
+    });
+}
+
+if (UI.elements.statsToggle) {
+    UI.elements.statsToggle.addEventListener("click", () => {
+        UI.elements.statsDrawer.classList.add("open");
+        UI.elements.drawerBackdrop.style.visibility = "visible";
+        UI.elements.drawerBackdrop.style.opacity = "1";
+    });
+}
+
+if (UI.elements.drawerClose) {
+    UI.elements.drawerClose.addEventListener("click", () => {
+        UI.elements.drawer.classList.remove("open");
+        UI.elements.drawerBackdrop.style.opacity = "0";
+        setTimeout(() => UI.elements.drawerBackdrop.style.visibility = "hidden", 300);
+    });
+}
+
+if (UI.elements.statsClose) {
+    UI.elements.statsClose.addEventListener("click", () => {
+        UI.elements.statsDrawer.classList.remove("open");
+        UI.elements.drawerBackdrop.style.opacity = "0";
+        setTimeout(() => UI.elements.drawerBackdrop.style.visibility = "hidden", 300);
+    });
+}
+
+if (UI.elements.drawerBackdrop) {
+    UI.elements.drawerBackdrop.addEventListener("click", () => {
+        UI.elements.drawer.classList.remove("open");
+        UI.elements.statsDrawer.classList.remove("open");
+        UI.elements.drawerBackdrop.style.opacity = "0";
+        setTimeout(() => UI.elements.drawerBackdrop.style.visibility = "hidden", 300);
     });
 }
 
