@@ -4,14 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards Gyro-App</title>
+  <title>Flashcards Gyro-App - Interactive Learning</title>
+  <!-- 
+    Gyro Cards Application
+    ======================
+    Structure:
+    1. Overlays (Orientation, Permission) for user guidance
+    2. Drawers (Stats, Settings) for secondary content
+    3. Main Stage (Card, Controls) for primary interaction
+  -->
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body class="d-flex flex-column align-items-center justify-content-center vh-100">
@@ -70,7 +78,8 @@
           <p class="mb-3"><i class="bi bi-mouse icon-inline" aria-hidden="true"></i> <strong>Button Controls:</strong>
           </p>
           <p class="mb-2"><i class="bi bi-arrow-repeat icon-inline" aria-hidden="true"></i> Click
-            <strong>"reveal"</strong> to flip the card (or tilt device towards you)</p>
+            <strong>"reveal"</strong> to flip the card (or tilt device towards you)
+          </p>
           <p class="mb-2"><i class="bi bi-hand-thumbs-up icon-inline" aria-hidden="true"></i> Click <strong>thumbs
               up</strong> if you know the answer</p>
           <p class="mb-2"><i class="bi bi-hand-thumbs-down icon-inline" aria-hidden="true"></i> Click <strong>thumbs
@@ -198,7 +207,7 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

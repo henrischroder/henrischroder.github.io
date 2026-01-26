@@ -1,0 +1,218 @@
+/* Overlays (Permission, Orientation, Edge Glow) */
+
+/* Screen Edge Glow */
+.edge-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.edge-glow.glow-green {
+    background: linear-gradient(to right,
+            transparent 0%,
+            rgba(40, 167, 69, 0.3) 90%,
+            rgba(40, 167, 69, 0.6) 95%,
+            rgba(32, 201, 151, 0.8) 100%);
+    animation: edgeGlowGreen 1s ease-out forwards;
+}
+
+.edge-glow.glow-red {
+    background: linear-gradient(to left,
+            transparent 0%,
+            rgba(220, 53, 69, 0.3) 90%,
+            rgba(220, 53, 69, 0.6) 95%,
+            rgba(232, 62, 140, 0.8) 100%);
+    animation: edgeGlowRed 1s ease-out forwards;
+}
+
+@keyframes edgeGlowGreen {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes edgeGlowRed {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Permission Overlay */
+.permission-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.permission-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.permission-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.permission-overlay-content {
+    background: transparent;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 90%;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+    color: white;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+.permission-overlay-content h2,
+.permission-overlay-content p {
+    color: white;
+}
+
+.permission-page .char {
+    display: inline;
+    opacity: 0;
+    animation: charFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes charFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.permission-page button,
+.permission-page a {
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+@keyframes buttonFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Instructions */
+.instructions-content {
+    text-align: left;
+    margin: 1.5rem 0;
+    color: white;
+}
+
+.instructions-content p {
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.icon-inline {
+    margin-right: 0.35rem;
+    font-size: 1.1em;
+    vertical-align: -0.05em;
+}
+
+#instructionsPage .instructions-content>*,
+#instructionsPage #gotItBtn {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition-delay: var(--instruction-delay, 0s);
+}
+
+#instructionsPage.showing .instructions-content>*,
+#instructionsPage.showing #gotItBtn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Orientation Overlay */
+.orientation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.orientation-overlay.show {
+    display: flex;
+}
+
+.orientation-overlay-content {
+    color: #ffffff;
+    max-width: 22rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.orientation-overlay .orientation-icon {
+    font-size: 3rem;
+}
+
+body.orientation-locked {
+    overflow: hidden;
+}

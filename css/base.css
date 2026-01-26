@@ -1,0 +1,43 @@
+/* Global Resets & Typography */
+* {
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+}
+
+body {
+    user-select: none;
+    background-color: #f8f9fa;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Gradient Background */
+.gradient-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    filter: blur(50px);
+}
+
+.gradient-background::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(24rem, 60vw, 72.1875rem);
+    aspect-ratio: 1155 / 678;
+    transform: translate(-50%, -50%) rotate(30deg);
+    background: linear-gradient(to top right, #ff80b5, #9089fc);
+    opacity: 0.3;
+    clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%);
+}

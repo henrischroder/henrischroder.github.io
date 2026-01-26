@@ -1,0 +1,191 @@
+/* Card Styles & 3D Transforms */
+#card {
+    --tilt-rotation: 0deg;
+    width: 300px;
+    height: 200px;
+    border-radius: 12px;
+    animation: cardIdle 6s ease-in-out infinite;
+    perspective: 1000px;
+    position: relative;
+    background: transparent;
+    border: none;
+    margin: 3rem auto;
+    transform-style: preserve-3d;
+}
+
+#card.slide-out-left {
+    animation: slideOutLeft 0.6s ease-in forwards;
+}
+
+#card.slide-out-right {
+    animation: slideOutRight 0.6s ease-in forwards;
+}
+
+#card.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* 3D Flip structure */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    border-radius: 12px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    background: transparent;
+    animation: cardShadow 4s ease-in-out infinite;
+    border: 3px solid transparent;
+    transition: border 0.3s ease, transform 0.6s ease;
+    transform: rotateY(0deg);
+}
+
+.card-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.card-front {
+    background: white;
+}
+
+.card-back {
+    background: white;
+    transform: rotateY(180deg);
+}
+
+.card-label {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+.card-question-back {
+    font-size: 0.9rem;
+    color: #6c757d;
+    opacity: 0.6;
+    font-style: italic;
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.4;
+    overflow-wrap: anywhere !important;
+    word-wrap: anywhere !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+}
+
+#card-text,
+#card-answer {
+    overflow-wrap: anywhere !important;
+    word-wrap: anywhere !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+    max-width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: clamp(0.875rem, 4vw, 1.5rem);
+    line-height: 1.4;
+    margin-top: 2rem !important;
+}
+
+/* Ensure h3 elements inside card faces don't break words */
+.card-face h3,
+.card-face #card-text,
+.card-face #card-answer {
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    word-break: keep-all !important;
+    hyphens: none !important;
+    white-space: normal !important;
+}
+
+#card.flipped .card-inner {
+    transform: rotateY(180deg);
+    will-change: transform;
+}
+
+/* Animations */
+@keyframes cardIdle {
+
+    0%,
+    100% {
+        transform: translateY(0) translateX(0) rotateZ(var(--tilt-rotation)) scale(1);
+    }
+
+    25% {
+        transform: translateY(-10px) translateX(4px) rotateZ(var(--tilt-rotation)) scale(1.01);
+    }
+
+    50% {
+        transform: translateY(-15px) translateX(0) rotateZ(var(--tilt-rotation)) scale(1.015);
+    }
+
+    75% {
+        transform: translateY(-10px) translateX(-4px) rotateZ(var(--tilt-rotation)) scale(1.01);
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-200%) translateY(0) rotate(-20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(200%) translateY(0) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+    }
+}
+
+@keyframes cardShadow {
+
+    0%,
+    100% {
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    50% {
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.18);
+    }
+}
