@@ -2,7 +2,7 @@ import { state } from './state.js';
 import * as UI from './ui.js';
 import * as Game from './game.js';
 import { loadFlashcardsFromStorage, saveFlashcardsToStorage } from './storage.js';
-import { initializeCardProgress } from './srs.js';
+import { initializeCardProgress, getProgressStats } from './srs.js';
 import { isMobileDevice } from './utils.js';
 
 // Main Initialization
