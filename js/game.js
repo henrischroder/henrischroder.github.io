@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import * as UI from './ui.js';
-import { updateCardProgress, getCardsDueForReview } from './srs.js';
+import { updateCardProgress, getCardsDueForReview, getProgressStats } from './srs.js';
 
 export function initializeDueCards(resetIndex = true) {
     const oldLength = state.dueCards.length;
@@ -162,7 +162,8 @@ export function markUnknown() {
 
 // Need to import getProgressStats from srs.js?
 // Yes, referenced in initializeDueCards.
-import { getProgressStats } from './srs.js';
+// (Moved to top of file)
+
 
 /**
  * Handles 'deviceorientation' events.
