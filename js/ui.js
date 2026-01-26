@@ -231,6 +231,24 @@ export function closeOverlay() {
     }, 400);
 }
 
+export function updateInstructionsText(hasGestureSupport) {
+    if (!elements.tiltInstructions) return;
+
+    if (hasGestureSupport) {
+        elements.tiltInstructions.innerHTML = `
+            <i class="bi bi-arrow-up icon-inline"></i> Tilt device <strong>towards you</strong> to reveal the answer <br>
+            <i class="bi bi-arrow-return-right icon-inline"></i> Tilt <strong>right</strong> when you know the answer <br>
+            <i class="bi bi-arrow-return-left icon-inline"></i> Tilt <strong>left</strong> when you don't know the answer
+        `;
+    } else {
+        elements.tiltInstructions.innerHTML = `
+            <i class="bi bi-cursor-fill icon-inline"></i> Click <strong>Reveal</strong> or press Space <br>
+            <i class="bi bi-hand-thumbs-up icon-inline"></i> Click <strong>Thumbs Up</strong> if you know the answer <br>
+            <i class="bi bi-hand-thumbs-down icon-inline"></i> Click <strong>Thumbs Down</strong> if you don't
+        `;
+    }
+}
+
 export function renderStats(stats) {
     if (!elements.statsContent) return;
 

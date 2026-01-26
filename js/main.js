@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 UI.showPermissionOverlay();
             } else {
                 state.hasPermission = false;
+                UI.updateInstructionsText(false);
                 UI.showInstructionsOverlay(false);
             }
         });
@@ -77,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (permissionState === 'granted') {
                         state.hasPermission = true;
                         document.body.classList.add("gesture-mode");
+                        UI.updateInstructionsText(true);
                         UI.showInstructionsOverlay(true);
                     } else {
                         alert("Permission denied. The app requires orientation sensors to work.");
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Non-iOS 13+ devices
                 state.hasPermission = true;
                 document.body.classList.add("gesture-mode");
+                UI.updateInstructionsText(true);
                 UI.showInstructionsOverlay(true);
             }
         });
@@ -97,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         UI.elements.skipPermissionBtn.addEventListener("click", (e) => {
             e.preventDefault();
             state.hasPermission = false;
+            UI.updateInstructionsText(false);
             UI.showInstructionsOverlay(false); // No gesture support mode
         });
     }
