@@ -242,7 +242,7 @@ export function updateInstructionsText(hasGestureSupport) {
         `;
     } else {
         elements.tiltInstructions.innerHTML = `
-            <i class="bi bi-cursor-fill icon-inline"></i> Click <strong>Reveal</strong> or press Space <br>
+            <i class="bi bi-cursor-fill icon-inline"></i> Click <strong>Reveal</strong> to see the answer <br>
             <i class="bi bi-hand-thumbs-up icon-inline"></i> Click <strong>Thumbs Up</strong> if you know the answer <br>
             <i class="bi bi-hand-thumbs-down icon-inline"></i> Click <strong>Thumbs Down</strong> if you don't
         `;
